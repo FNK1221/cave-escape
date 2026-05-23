@@ -9,85 +9,99 @@
 body{background:#000;overflow:hidden;touch-action:none;font-family:'Courier New',monospace;user-select:none}
 canvas{display:block;position:fixed;top:0;left:0}
 
+/* 竖屏旋转提示 */
+#rotateHint{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0510;z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#rotateHint .phone{width:50px;height:80px;border:3px solid #ff6b35;border-radius:8px;animation:rotP 2s ease-in-out infinite}
+#rotateHint p{color:#ff6b35;font-size:16px}
+@keyframes rotP{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
+@media (orientation:portrait) and (max-width:768px){#rotateHint{display:flex!important}}
+
 /* 通用遮罩 */
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:100}
 .overlay.active{display:flex}
 
 /* 标题屏 */
 #titleScreen{background:linear-gradient(180deg,#1a0a2e,#0d0520)}
-#titleScreen h1{font-size:clamp(28px,7vw,52px);color:#ff6b35;text-shadow:0 0 20px #ff6b35,0 0 40px rgba(255,107,53,.3);margin-bottom:6px;letter-spacing:2px}
-#titleScreen .sub{color:#665580;font-size:clamp(12px,3vw,16px);margin-bottom:40px}
-.btn{padding:14px 36px;font-size:clamp(14px,3.5vw,20px);background:#ff6b35;color:#fff;border:none;border-radius:8px;cursor:pointer;margin:6px;font-family:inherit;transition:transform .15s,background .15s}
+#titleScreen h1{font-size:clamp(28px,5vw,48px);color:#ff6b35;text-shadow:0 0 20px #ff6b35,0 0 40px rgba(255,107,53,.3);margin-bottom:6px;letter-spacing:2px}
+#titleScreen .sub{color:#665580;font-size:clamp(11px,2vw,14px);margin-bottom:30px}
+.btn{padding:12px 28px;font-size:clamp(13px,2.5vw,18px);background:#ff6b35;color:#fff;border:none;border-radius:8px;cursor:pointer;margin:5px;font-family:inherit;transition:transform .15s,background .15s}
 .btn:hover{background:#ff8855}
 .btn:active{transform:scale(.93)}
 .btn.secondary{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15)}
 
 /* 角色选择 */
 #charScreen{background:linear-gradient(180deg,#1a0a2e,#0d0520)}
-#charScreen h2{color:#ff6b35;font-size:clamp(20px,5vw,32px);margin-bottom:20px}
-.chars{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
-.char-card{padding:16px 20px;background:rgba(255,255,255,.04);border:2px solid #333;border-radius:12px;cursor:pointer;text-align:center;transition:all .25s;min-width:120px}
+#charScreen h2{color:#ff6b35;font-size:clamp(18px,4vw,28px);margin-bottom:16px}
+.chars{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-bottom:20px}
+.char-card{padding:14px 18px;background:rgba(255,255,255,.04);border:2px solid #333;border-radius:10px;cursor:pointer;text-align:center;transition:all .25s;min-width:100px}
 .char-card:hover,.char-card.sel{border-color:#ff6b35;background:rgba(255,107,53,.08)}
-.char-card .icon{font-size:40px}
-.char-card .nm{color:#fff;font-size:16px;margin-top:6px}
-.char-card .desc{color:#8877aa;font-size:11px;margin-top:4px}
+.char-card .icon{font-size:36px}
+.char-card .nm{color:#fff;font-size:14px;margin-top:4px}
+.char-card .desc{color:#8877aa;font-size:10px;margin-top:3px}
 
-/* HUD */
-#hud{position:fixed;top:0;left:0;width:100%;padding:6px 10px;z-index:50;pointer-events:none;display:none}
+/* HUD - 横屏布局 */
+#hud{position:fixed;top:0;left:0;width:100%;padding:4px 12px;z-index:50;pointer-events:none;display:none}
 .hud-row{display:flex;align-items:center;gap:8px}
-.hp-bar{width:120px;height:12px;background:#222;border-radius:6px;overflow:hidden;border:1px solid #444}
-.hp-fill{height:100%;background:linear-gradient(90deg,#e74c3c,#ff6b6b);border-radius:6px;transition:width .3s}
-.hp-text{color:#ccc;font-size:11px}
+.hp-bar{width:140px;height:14px;background:#222;border-radius:7px;overflow:hidden;border:1px solid #444}
+.hp-fill{height:100%;background:linear-gradient(90deg,#e74c3c,#ff6b6b);border-radius:7px;transition:width .3s}
+.hp-text{color:#ccc;font-size:12px}
+.weapon-tag{color:#aaa;font-size:11px;margin-left:8px;background:rgba(255,255,255,.05);padding:2px 6px;border-radius:4px}
 .level-name{color:#ff6b35;font-size:12px;margin-left:auto}
-.status-tags{display:flex;gap:3px;margin-top:3px}
+.status-tags{display:flex;gap:3px;margin-top:2px}
 .stag{padding:1px 5px;border-radius:3px;font-size:9px;color:#fff}
-.stag.slow{background:#3498db}.stag.poison{background:#27ae60}.stag.confuse{background:#9b59b6}.stag.orb{background:#f1c40f}.stag.adrenaline{background:#e67e22}.stag.armor{background:#95a5a6}
+.stag.slow{background:#3498db}.stag.poison{background:#27ae60}.stag.confuse{background:#9b59b6}.stag.orb{background:#f1c40f}.stag.adrenaline{background:#e67e22}.stag.armor{background:#95a5a6}.stag.torch{background:#e67e22}
 
-/* 背包 */
-#invBar{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);display:none;gap:3px;z-index:50}
-.inv-s{width:44px;height:44px;background:rgba(0,0,0,.7);border:2px solid #444;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;cursor:pointer}
+/* 背包 - 横屏底部居中 */
+#invBar{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);display:none;gap:4px;z-index:50}
+.inv-s{width:42px;height:42px;background:rgba(0,0,0,.75);border:2px solid #444;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;position:relative;cursor:pointer}
 .inv-s:active{border-color:#ff6b35}
-.inv-s .cnt{position:absolute;bottom:1px;right:2px;font-size:9px;color:#fff}
-.inv-s .key{position:absolute;top:1px;left:3px;font-size:8px;color:#888}
+.inv-s .cnt{position:absolute;bottom:1px;right:2px;font-size:8px;color:#fff}
+.inv-s .key{position:absolute;top:1px;left:3px;font-size:7px;color:#888}
 
-/* 手机摇杆 */
-#joyArea{position:fixed;bottom:15px;left:15px;width:110px;height:110px;z-index:60;display:none}
-#joyBase{width:110px;height:110px;background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.12);border-radius:50%;position:relative}
-#joyKnob{width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:50%;position:absolute;top:33px;left:33px}
+/* 手机摇杆 - 横屏左侧 */
+#joyArea{position:fixed;bottom:12px;left:16px;width:100px;height:100px;z-index:60;display:none}
+#joyBase{width:100px;height:100px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:50%;position:relative}
+#joyKnob{width:40px;height:40px;background:rgba(255,255,255,.18);border-radius:50%;position:absolute;top:30px;left:30px}
 
-.mob-btns{position:fixed;bottom:15px;right:15px;display:none;gap:8px;z-index:60}
-.mob-btn{width:52px;height:52px;border-radius:50%;border:2px solid rgba(255,255,255,.2);background:rgba(0,0,0,.45);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mob-btns{position:fixed;bottom:14px;right:16px;display:none;gap:6px;z-index:60}
+.mob-btn{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:rgba(0,0,0,.5);color:#fff;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .mob-btn:active{background:rgba(255,107,53,.3);border-color:#ff6b35}
 
 /* 关卡过渡 */
 #lvlTrans{position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:200;display:none;align-items:center;justify-content:center;flex-direction:column}
-#lvlTrans h2{color:#ff6b35;font-size:clamp(24px,6vw,40px)}
-#lvlTrans p{color:#8877aa;font-size:clamp(12px,3vw,16px);margin-top:8px}
+#lvlTrans h2{color:#ff6b35;font-size:clamp(22px,5vw,36px)}
+#lvlTrans p{color:#8877aa;font-size:clamp(11px,2.5vw,14px);margin-top:6px}
 
 /* 宝箱弹窗 */
-#chestDlg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,8,25,.96);border:2px solid #ff6b35;border-radius:12px;padding:20px 28px;z-index:150;display:none;text-align:center;min-width:200px}
-#chestDlg h3{color:#ffd700;font-size:20px;margin-bottom:8px}
-#chestDlg .item{font-size:24px;margin:8px 0}
-#chestDlg .iname{color:#ffd700;font-size:16px}
-#chestDlg .idesc{color:#9988bb;font-size:12px;margin-top:4px}
+#chestDlg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,8,25,.96);border:2px solid #ff6b35;border-radius:12px;padding:18px 24px;z-index:150;display:none;text-align:center;min-width:180px}
+#chestDlg h3{color:#ffd700;font-size:18px;margin-bottom:6px}
+#chestDlg .item{font-size:22px;margin:6px 0}
+#chestDlg .iname{color:#ffd700;font-size:15px}
+#chestDlg .idesc{color:#9988bb;font-size:11px;margin-top:3px}
 
 /* 结束屏 */
 #endScreen{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.92);z-index:200;display:none;align-items:center;justify-content:center;flex-direction:column}
-#endScreen h2{font-size:clamp(24px,6vw,42px);margin-bottom:12px}
-#endScreen p{color:#9988bb;font-size:14px;margin-bottom:20px}
-#endScreen .btn{margin-top:8px}
+#endScreen h2{font-size:clamp(22px,5vw,38px);margin-bottom:10px}
+#endScreen p{color:#9988bb;font-size:13px;margin-bottom:16px}
+#endScreen .btn{margin-top:6px}
 
 /* Boss 血条 */
-#bossBar{position:fixed;top:40px;left:50%;transform:translateX(-50%);display:none;z-index:55;text-align:center}
-#bossBar .bname{color:#ff6b35;font-size:13px;margin-bottom:3px}
-#bossBar .bhp{width:180px;height:10px;background:#333;border-radius:5px;overflow:hidden}
+#bossBar{position:fixed;top:36px;left:50%;transform:translateX(-50%);display:none;z-index:55;text-align:center}
+#bossBar .bname{color:#ff6b35;font-size:12px;margin-bottom:2px}
+#bossBar .bhp{width:200px;height:10px;background:#333;border-radius:5px;overflow:hidden}
 #bossBar .bhp-fill{height:100%;background:#e74c3c;border-radius:5px;transition:width .2s}
 
-/* 小地图 */
-#minimap{position:fixed;top:6px;right:6px;z-index:55;border:1px solid #333;border-radius:4px;opacity:.7}
+/* 小地图 - 横屏右上 */
+#minimap{position:fixed;top:30px;right:6px;z-index:55;border:1px solid #333;border-radius:4px;opacity:.7}
 </style>
 </head>
 <body>
+
+<!-- 竖屏旋转提示 -->
+<div id="rotateHint">
+  <div class="phone"></div>
+  <p>请横屏游玩 🔄</p>
+</div>
 
 <!-- 标题屏 -->
 <div id="titleScreen" class="overlay active">
@@ -245,15 +259,19 @@ window.onload=function(){
   mmCtx=mmCanvas.getContext('2d');
   resize();
   window.addEventListener('resize',resize);
-  isMobile='ontouchstart' in window;
+  isMobile='ontouchstart' in window||navigator.maxTouchPoints>0;
   if(isMobile){
     document.getElementById('joyArea').style.display='block';
     document.getElementById('mobBtns').style.display='flex';
     document.getElementById('minimap').style.display='none';
     initJoystick();
   }
-  window.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;e.preventDefault()});
+  window.addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault()});
   window.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false});
+  // 锁定横屏（如果支持）
+  if(screen.orientation&&screen.orientation.lock){
+    screen.orientation.lock('landscape').catch(()=>{});
+  }
   requestAnimationFrame(loop);
 };
 
@@ -1271,6 +1289,7 @@ function initJoystick(){
   const knob=document.getElementById('joyKnob');
   const base=document.getElementById('joyBase');
   let touchId=null;
+  const maxR=35; // 摇杆最大偏移半径
 
   area.addEventListener('touchstart',e=>{
     e.preventDefault();
@@ -1290,7 +1309,7 @@ function initJoystick(){
         touchId=null;
         joyActive=false;
         joyDir={x:0,y:0};
-        knob.style.left='33px';knob.style.top='33px';
+        knob.style.left='30px';knob.style.top='30px';
       }
     }
   });
@@ -1301,10 +1320,9 @@ function initJoystick(){
     const cy=rect.top+rect.height/2;
     let dx=t.clientX-cx, dy=t.clientY-cy;
     const d=Math.hypot(dx,dy);
-    const maxR=40;
     if(d>maxR){dx=dx/d*maxR;dy=dy/d*maxR}
-    knob.style.left=(33+dx)+'px';
-    knob.style.top=(33+dy)+'px';
+    knob.style.left=(30+dx)+'px';
+    knob.style.top=(30+dy)+'px';
     joyActive=true;
     joyDir={x:dx/maxR,y:dy/maxR};
   }
