@@ -7,13 +7,15 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#000;overflow:hidden;touch-action:none;font-family:'Courier New',monospace;user-select:none;-webkit-user-select:none}
-canvas{display:block;position:fixed;top:0;left:0}
+canvas{display:block;position:fixed;top:0;left:0;touch-action:none}
+.overlay{touch-action:auto}
+.btn{touch-action:auto}
 
 #rotateHint{position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0510;z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
 #rotateHint .phone{width:50px;height:80px;border:3px solid #ff6b35;border-radius:8px;animation:rotP 2s ease-in-out infinite}
 #rotateHint p{color:#ff6b35;font-size:16px}
 @keyframes rotP{0%,100%{transform:rotate(0deg)}50%{transform:rotate(90deg)}}
-@media(orientation:portrait) and (max-width:900px){#rotateHint{display:flex!important}}
+@media(orientation:portrait) and (max-width:768px){#rotateHint{display:flex!important}}
 
 .overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:100}
 .overlay.active{display:flex}
@@ -21,7 +23,7 @@ canvas{display:block;position:fixed;top:0;left:0}
 #titleScreen{background:linear-gradient(180deg,#1a0a2e,#0d0520)}
 #titleScreen h1{font-size:clamp(24px,5vw,44px);color:#ff6b35;text-shadow:0 0 20px #ff6b35,0 0 40px rgba(255,107,53,.3);margin-bottom:4px;letter-spacing:2px}
 #titleScreen .sub{color:#665580;font-size:clamp(10px,2vw,13px);margin-bottom:24px}
-.btn{padding:11px 24px;font-size:clamp(12px,2.5vw,17px);background:#ff6b35;color:#fff;border:none;border-radius:8px;cursor:pointer;margin:4px;font-family:inherit;transition:transform .12s,background .12s}
+.btn{padding:11px 24px;font-size:clamp(12px,2.5vw,17px);background:#ff6b35;color:#fff;border:none;border-radius:8px;cursor:pointer;margin:4px;font-family:inherit;transition:transform .12s,background .12s;touch-action:manipulation}
 .btn:hover{background:#ff8855}
 .btn:active{transform:scale(.92)}
 .btn.secondary{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15)}
@@ -29,7 +31,7 @@ canvas{display:block;position:fixed;top:0;left:0}
 #charScreen{background:linear-gradient(180deg,#1a0a2e,#0d0520)}
 #charScreen h2{color:#ff6b35;font-size:clamp(16px,3.5vw,26px);margin-bottom:14px}
 .chars{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
-.char-card{padding:12px 16px;background:rgba(255,255,255,.04);border:2px solid #333;border-radius:10px;cursor:pointer;text-align:center;transition:all .25s;min-width:110px}
+.char-card{padding:12px 16px;background:rgba(255,255,255,.04);border:2px solid #333;border-radius:10px;cursor:pointer;text-align:center;transition:all .25s;min-width:110px;touch-action:manipulation}
 .char-card:hover,.char-card.sel{border-color:#ff6b35;background:rgba(255,107,53,.08)}
 .char-card canvas{display:block;margin:0 auto 4px}
 .char-card .nm{color:#fff;font-size:13px;margin-top:2px}
@@ -74,7 +76,7 @@ canvas{display:block;position:fixed;top:0;left:0}
 
 #shopDlg{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(15,8,25,.96);border:2px solid #ffd700;border-radius:12px;padding:16px 20px;z-index:150;display:none;min-width:220px}
 #shopDlg h3{color:#ffd700;font-size:16px;margin-bottom:8px;text-align:center}
-.shop-item{display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer;margin-bottom:4px;background:rgba(255,255,255,.03)}
+.shop-item{display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer;margin-bottom:4px;background:rgba(255,255,255,.03);touch-action:manipulation}
 .shop-item:active{background:rgba(255,107,53,.15)}
 .shop-item .si-icon{font-size:18px}
 .shop-item .si-info{flex:1}
@@ -470,6 +472,7 @@ function drawCharacter(cx,x,y,charIdx,facing,walkAnim,hasWeapon,weapon,armor){
 
 // ============ 界面 ============
 function showCharSelect(){
+  document.getElementById('rotateHint').style.display='none';
   document.getElementById('titleScreen').classList.remove('active');
   document.getElementById('charScreen').classList.add('active');
   state='charSelect';
@@ -487,6 +490,7 @@ function pickChar(i,el){
 function startGame(){
   curLevel=0;
   stats={kills:0,chests:0,gold:0,dashCount:0};
+  document.getElementById('rotateHint').style.display='none';
   document.getElementById('charScreen').classList.remove('active');
   document.getElementById('hud').style.display='block';
   document.getElementById('invBar').style.display='flex';
